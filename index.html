@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--Header and Menu Section-->
+    <header class="container">
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a class="active" href="#">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!--Booking Section-->
+    <main class="main-content container">
+        <div class="booking-form">
+            <h3>Booking Flights</h3>
+            <div class="input-group">
+                <label for="">Flying From</label>
+                <input class="inp-style" type="text" name="" placeholder="Dhake, Bangladesh">
+            </div>
+            <div class="input-group">
+                <label for="">Flying To</label>
+                <input class="inp-style" type="text" name="" placeholder="New York, United States">
+            </div>
+            <div class="inputs">
+                <div class="input-group">
+                    <label" for="">Departure</label>
+                        <input class="inp-style" type="date" name="">
+                </div>
+                <div class="input-group">
+                    <label for="">Return</label>
+                    <input class="inp-style" type="date" name="">
+                </div>
+            </div>
+            <div class="input-group f-class">
+                <div>
+                    <label for="">First Class ($150)</label>
+                    <input id="firstClass" class="inp-style inp-width" type="number" name="" value="0" disabled>
+                </div>
+                <div class="plus-minus-btn">
+                    <button  onclick="plusMinus('firstClass', true)" class="btn btn-default">
+                        <i class="fas fa-plus"></i></button>
+                    <button onclick="plusMinus('firstClass', false)" class=" btn btn-default">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+
+            <div class="input-group f-class">
+                <div>
+                    <label for="">Economy ($100)</label>
+                    <input id="economyClass" class="inp-style inp-width" type="number" name="" value="0" disabled>
+                </div>
+                <div class="plus-minus-btn">
+
+                    <button  onclick="plusMinus('economyClass',true)" class=" btn btn-default">
+                        <i class="fas fa-plus"></i></button>
+                    <button onclick="plusMinus('economyClass',false)" class=" btn btn-default">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="calculations">
+                <div class="amount">
+                    <div class="left">
+                        <p>Subtotal</p>
+                    </div>
+                    <div class="right">
+                        <p>$ <span id="subTotal">000</span> </p>
+                    </div>
+                </div>
+
+                <div class="amount">
+                    <div class="left">
+                        <p>Charge 10% VAT</p>
+                    </div>
+                    <div class="right">
+                        <p>$ <span id="vat">00</span> </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="amount">
+                    <div class="left">
+                        <h4>Total</h4>
+                    </div>
+                    <div class="right">
+                        <p>$ <span id='total'>0</span></p>
+                    </div>
+                </div>
+            </div>
+            <button id="myBtn" class="btn-style">Book Now</button>
+        </div>
+
+        <div class="booking-content">
+            <h1>discover <br> around the world</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicingelit. Provident voluptatibus quam fuga laborumalias
+                veniam libero autem quasi maxime ullam vero nama imi dolor, architecto ab facilis eaque deserunt nobise
+                voluptatibus quam</p>
+        </div>
+        <!--PopUp Box-->
+        <div id="confirmedBox" class="popUpBox">
+            <div class="box-content">
+                <span class="close">&Chi;</span>
+                <h1>Awesome</h1>
+                <h3>Your booking has been confirmed</h3>
+            </div>
+
+        </div>
+        <div id="sorryBox" class="popUpBox">
+            <div class="box-content">
+                <span class="close">&Chi;</span>
+                <h1>Sorry</h1>
+                <h3>Please choose your ticket at first</h3>
+            </div>
+
+        </div>
+    </main>
+   
+   <script>
+        function plusMinus(id, condition) {
+            //count ticket 
+            const amount = document.getElementById(id).value;
+            let amountNum = parseFloat(amount);
+            if (condition == true) {
+                amountNum++;
+            }
+            else if (condition == false && amountNum > 0) {
+                amountNum--;
+            }
+            document.getElementById(id).value = amountNum;
+
+            // calculate the Money 
+            calculateMoney();
+
+            // show confirmed box   
+            var value = document.getElementById('total').innerText;
+            value = parseInt(value)
+            if (value > 0) {
+                popUpBox("confirmedBox", 0);
+            } else { popUpBox("sorryBox", 1); }
+        }
+
+        function calculateTickets(id) {
+            const ticketValue = document.getElementById(id).value
+            const ticketValueCount = parseFloat(ticketValue)
+            if (id == "firstClass") {
+                let firstTotal = ticketValueCount * 150;
+                return firstTotal;
+            } else if (id == 'economyClass') {
+                let economyTotal = ticketValueCount * 100;
+                return economyTotal;
+            }
+        }
+
+        function calculateMoney() {
+            let subTotal = calculateTickets("firstClass") + calculateTickets('economyClass');
+            document.getElementById('subTotal').innerText = subTotal;
+            let totalVat = (10 / 100) * subTotal;
+            document.getElementById('vat').innerText = totalVat;
+            document.getElementById('total').innerText = subTotal + totalVat;
+        }
+
+        popUpBox("sorryBox", 1);
+
+        //popUp box
+        function popUpBox(model, int) {
+            var modal = document.getElementById(model);
+
+            var btn = document.getElementById("myBtn");
+
+            // close the modal
+            var span = document.getElementsByClassName("close")[int];
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>
